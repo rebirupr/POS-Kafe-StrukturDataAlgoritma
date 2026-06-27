@@ -1,33 +1,45 @@
 package service;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import model.Produk;
 
+// HashMap katalog, harga kustomisasi, dan validasi stok
 public class ProductService {
-    // Menyimpan seluruh produk dengan key yang berupa ID
+
     private HashMap<String, Produk> katalog = new HashMap<>();
-    //Menyimpan biaya tambahan untuk setiap opsi kustomisasi
     private HashMap<String, Integer> hargaKustomisasi = new HashMap<>();
 
-    // isi data produk awal, dipanggil manual dari Main.java pas program mulai
-    // pake clear() dulu agar hasilnya konsisten meskipun method ini dipanggil lebih dari satu kali
+    // baca data produk dari data atau produk.csv, dipanggil manual dari Main.java saat program dimulai
+    // gunakan clear() terlebih dahulu agar  hasilnya konsisten meskipun method ini dipanggil lebih dari satu kali
+    // format csv yaitu id,nama,hargaDasar,stok, baris pertama header jadi dilewatin
     public void loadProduk() {
         katalog.clear();
-        katalog.put("P001", new Produk("P001", "Americano", 20000, 20));
-        katalog.put("P002", new Produk("P002", "Caramel Latte", 28000, 15));
-        katalog.put("P003", new Produk("P003", "Cappuccino", 28000, 13));
-        katalog.put("P004", new Produk("P004", "Matcha Latte", 32000, 20));
-        katalog.put("P005", new Produk("P005", "Espresso", 18000, 10));
-        katalog.put("P006", new Produk("P006", "Hazelnut Latte", 30000, 15));
-        katalog.put("P007", new Produk("P007", "Caramel Macchiato", 30000, 18));
-        katalog.put("P008", new Produk("P008", "Butterscotch Sea Salt", 28000, 15));
+        try (BufferedReader reader = new BufferedReader(new FileReader("data/produk.csv"))) {
+            // lewati baris header
+            reader.readLine(); 
+            String baris;
+            while ((baris = reader.readLine()) != null) {
+                String[] data = baris.split(",");
+                String id = data[0];
+                String nama = data[1];
+                int harga = Integer.parseInt(data[2]);
+                int stok = Integer.parseInt(data[3]);
+                katalog.put(id, new Produk(id, nama, harga, stok));
+            }
+        } catch (IOException | NumberFormatException e) {
+            // IOException kalau filenya tidak ditemukan, NumberFormatException kalau isi csvnya rusak
+            System.out.println("Gagal membaca data produk: " + e.getMessage());
+        }
     }
-    
-    /* harga tambahan tiap opsi kustomisasi (ukuran, gula, suhu) yang gratis tetep dimasukin nilainya 0, 
-    agar konsisten jika dicari menggunakan getHargaKustomisasi()*/
+
+    /*  harga tambahan tiap opsi kustomisasi yang ada, yang gratis tetep dimasukin nilainya 0, biar konsisten kalo dicari menggunakan getHargaKustomisasi()
+     opsi ukuran cuma Regular dan Large, sesuai kesepakatan denggan Anggota kelompok */
     public void loadHargaKustomisasi() {
         hargaKustomisasi.clear();
         hargaKustomisasi.put("Regular", 0);
@@ -39,18 +51,18 @@ public class ProductService {
         hargaKustomisasi.put("Ice", 0);
     }
 
-    // Kompleksitasnya O(1) karena lookup langsung menggunakan key di HashMap tidak perlu looping
-    // digunakan jika sudah tau ID produknya pasti misalkan saat scan barcode
+    /*  Kompleksitasnya O(1) karena lookup langsung menggunakan key di HashMa jadi tidak perlu looping
+    ini yang gunakan jika  sudah mengetahui ID produknya secara pasti, misal saat scan barcode*/
     public Produk cariProdukById(String id) {
         return katalog.get(id);
     }
 
-    /*  Kompleksitasnya O(n) karena harus looping semua produk untuk mencocokkan dengan keyword berbeda dengan
-     cariProdukById yang kompleksitasnya O(1), karena HashMap cepat jika mencari pakai keynya langsung */
+    /*  kompleksitasnya O(n) karena harus looping semua produk untk dicocokkan dengan keyword,
+    berbeda dengan cariProdukById yang kompleksitasnya O(1), karena  HashMap hanya cepat jika mencari menggunakan keynya langsung */
     public List<Produk> cariProdukByNama(String keyword) {
         List<Produk> hasil = new ArrayList<>();
         if (keyword == null) {
-            // untuk berjaga-jaga agar tidak  NullPointerException jika ada yang memanggil dengan null
+            // buat berjaga-jaga agar tidak NullPointerException jika ada yang memanggil dengan null
             return hasil; 
         }
         // di luar loop agar tidak dipanggil berulang setiap iterasi
@@ -63,7 +75,7 @@ public class ProductService {
         return hasil;
     }
 
-    // Kompleksitasnya O(1) karena  memanggil cariProdukById yang sudah O(1), kemudian  tinggal membandingkan angka, dan jumlah negatif ataupun nol ditolak
+    //  Kompleksitasnya O(1) karena manggil cariProdukById yang sudah berkompleksitas O(1), kemudian memebandingkan angka, jumlah negatif/nol ditolak
     public boolean stokCukup(String id, int jumlah) {
         if (jumlah <= 0) {
             return false;
@@ -75,7 +87,7 @@ public class ProductService {
         return p.getStok() >= jumlah;
     }
 
-    // dipanggil saat checkout untuk mengurangi stok permanen, jumlah negatif atau nol ditolak 
+    // dipanggil saat checkout untuk mengurangi stok permanen, jumlah negatif atau nol ditolak
     public void kurangiStok(String id, int jumlah) {
         if (jumlah <= 0) {
             return;
@@ -86,7 +98,7 @@ public class ProductService {
         }
     }
 
-    // Dipanggil saat undo atau void, untuk memngembalikkan  stok yang sempat dikurangkan
+    // dipanggil saat undo atau void untul mengembalikkan stok yang tadi sudah dikurangi
     public void tambahStok(String id, int jumlah) {
         if (jumlah <= 0) {
             return;
@@ -97,13 +109,13 @@ public class ProductService {
         }
     }
 
-    // ambil harga tambahan dari 1 opsi kustomisasi, misal Large = 3000, jika opsinya tidak ditemukan di HashMap maka dianggap   gratis (0), agar gak null pointer
+    // ambil harga tambahan dari 1 opsi kustomisasi, misal large berarti tambah 3000 kalau opsinya gak ketemu di HashMap maka dianggap  gratis (0) agar tidak null pointer
     public int getHargaKustomisasi(String opsi) {
         Integer harga = hargaKustomisasi.get(opsi);
         return harga != null ? harga : 0;
     }
 
-    // Untuk menampilkan di menu lihat semua produk
+    // untuk menampilin di menu lihat semua produk
     public Collection<Produk> getSemuaProduk() {
         return katalog.values();
     }
