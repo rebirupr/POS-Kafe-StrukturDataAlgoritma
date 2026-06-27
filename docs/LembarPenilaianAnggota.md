@@ -15,8 +15,8 @@ Kelompok    : [Nomor Kelompok]
    - Mengelola data produk dan harga kustomisasi yang dibaca dari file CSV.
    - Menambahkan komentar analisis kompleksitas pada method yang relevan.
 
-2. Nama Anggota 2 : [Nama]
-   NIM            : [NIM]
+2. Nama Anggota 2 : [Rona Humaira]
+   NIM            : [L0125030]
    Kontribusi     :
    - Merancang class Pelanggan, ItemKeranjang, QueueService, dan CartService.
    - Mengimplementasikan Queue untuk antrean pelanggan.
