@@ -5,8 +5,8 @@ LEMBAR PENILAIAN KONTRIBUSI ANGGOTA KELOMPOK
 Tema Proyek : POS (Point of Sale) System - Campus Coffee POS
 Kelompok    : [Nomor Kelompok]
 
-1. Nama Anggota 1 : [Nama]
-   NIM            : [NIM]
+1. Nama Anggota 1 : [Jovienda Nadia Judial Kharisa]
+   NIM            : [L0125018]
    Kontribusi     :
    - Merancang class Produk dan ProductService.
    - Mengimplementasikan struktur data HashMap untuk katalog produk.
