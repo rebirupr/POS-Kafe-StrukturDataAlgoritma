@@ -15,9 +15,9 @@ public class ProductService {
     private HashMap<String, Produk> katalog = new HashMap<>();
     private HashMap<String, Integer> hargaKustomisasi = new HashMap<>();
 
-    // baca data produk dari data atau produk.csv, dipanggil manual dari Main.java saat program dimulai
-    // gunakan clear() terlebih dahulu agar  hasilnya konsisten meskipun method ini dipanggil lebih dari satu kali
-    // format csv yaitu id,nama,hargaDasar,stok, baris pertama header jadi dilewatin
+    /* baca data produk dari data atau produk.csv, dipanggil manual dari Main.java saat program dimulai,
+    menggunakan clear() terlebih dahulu agar hasilnya konsisten meskipun method ini dipanggil lebih dari satu kali,
+    format csv yaitu id,nama,hargaDasar,stok, baris pertama header jadi dilewatin */ 
     public void loadProduk() {
         katalog.clear();
         try (BufferedReader reader = new BufferedReader(new FileReader("data/produk.csv"))) {
