@@ -14,6 +14,9 @@ public class Transaksi {
     // Nomor antrean pelanggan.
     private String nomorAntrean;
 
+    // Nama Pelanggan
+    private String namaPelanggan;
+
     // Seluruh item yang dibeli pelanggan.
     private ArrayList<ItemKeranjang> daftarItem;
 
@@ -26,12 +29,14 @@ public class Transaksi {
     // Constructor digunakan ketika proses checkout berhasil.
     public Transaksi(String idTransaksi,
                      String nomorAntrean,
+                     String namaPelanggan,
                      ArrayList<ItemKeranjang> daftarItem,
                      int totalHarga,
                      LocalDateTime waktuTransaksi) {
 
         this.idTransaksi = idTransaksi;
         this.nomorAntrean = nomorAntrean;
+        this.namaPelanggan = namaPelanggan;
         this.daftarItem = daftarItem;
         this.totalHarga = totalHarga;
         this.waktuTransaksi = waktuTransaksi;
@@ -45,6 +50,11 @@ public class Transaksi {
     // Mengembalikan nomor antrean pelanggan.
     public String getNomorAntrean() {
         return nomorAntrean;
+    }
+
+    // Mengembalikan nama Pelanggan
+    public String getNamaPelanggan() {
+        return namaPelanggan;
     }
 
     // Mengembalikan seluruh item yang dibeli pelanggan.
