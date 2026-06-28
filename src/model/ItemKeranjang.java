@@ -45,7 +45,7 @@ public class ItemKeranjang {
     }
 
     // Mengembalikan harga akhir produk yang sudah memperhitungkan seluruh biaya kustomisasi.
-    public double getHargaFinal() {
+    public int getHargaFinal() {
         return hargaFinal;
     }
 } 
