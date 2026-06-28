@@ -16,11 +16,11 @@ public class ItemKeranjang {
     private Map<String, String> kustomisasi;
 
     // Menyimpan harga akhir satu produk setelah ditambah biaya dari seluruh pilihan kustomisasi.
-    private double hargaFinal;
+    private int hargaFinal;
 
     // Constructor digunakan saat pelanggan menambahkan produk ke dalam keranjang.
     // Seluruh dara yang diterima langsung disimpan ke atribut object agar dapat digunakan saat menghitung total maupun mencetak struk.
-    public ItemKeranjang(Produk produk, int jumlah, Map<String, String> kustomisasi, double hargaFinal) {
+    public ItemKeranjang(Produk produk, int jumlah, Map<String, String> kustomisasi, int hargaFinal) {
         this.produk = produk;
         this.jumlah = jumlah;
         this.kustomisasi = kustomisasi;
