@@ -2,7 +2,6 @@ package service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import model.ItemKeranjang;
 import model.Transaksi;
 
@@ -24,9 +23,11 @@ public class ReportService {
 
         System.out.println("\n========== LAPORAN PENJUALAN ==========");
         System.out.println("Jumlah Transaksi : " + getJumlahTransaksi());
+        System.out.println("Jumlah Item      : " + hitungJumlahItemTerjual());
         System.out.println("Total Pendapatan : Rp" + hitungTotalPendapatan());
 
         tampilkanProdukTerlaris();
+
     }
 
     // Menghitung total pendapatan.
@@ -40,6 +41,27 @@ public class ReportService {
         }
 
         return total;
+
+    }
+
+    // Menghitung total item yang berhasil terjual.
+    // Kompleksitas: O(m)
+    public int hitungJumlahItemTerjual() {
+
+        int jumlah = 0;
+
+        for (Transaksi transaksi : transactionService.getRiwayatTransaksi()) {
+
+            for (ItemKeranjang item : transaksi.getDaftarItem()) {
+
+                jumlah += item.getJumlah();
+
+            }
+
+        }
+
+        return jumlah;
+
     }
 
     // Mengembalikan jumlah transaksi.
@@ -48,17 +70,17 @@ public class ReportService {
         return transactionService.getJumlahTransaksi();
     }
 
-    // Menampilkan produk yang paling sering terjual.
-    // Sementara menggunakan HashMap.
-    // Nanti tinggal disesuaikan dengan getter ItemKeranjang milik Anggota 2.
+    // Menampilkan produk terlaris.
     // Kompleksitas: O(m)
     public void tampilkanProdukTerlaris() {
 
         ArrayList<Transaksi> riwayat = transactionService.getRiwayatTransaksi();
 
         if (riwayat.isEmpty()) {
+
             System.out.println("Produk Terlaris : -");
             return;
+
         }
 
         HashMap<String, Integer> frekuensi = new HashMap<>();
@@ -67,14 +89,14 @@ public class ReportService {
 
             for (ItemKeranjang item : transaksi.getDaftarItem()) {
 
-                // Ganti getNamaProduk() sesuai getter yang dipakai ItemKeranjang
-                String namaProduk = item.getNamaProduk();
+                String namaProduk = item.getProduk().getNama();
 
                 frekuensi.put(
                         namaProduk,
                         frekuensi.getOrDefault(namaProduk, 0) + item.getJumlah());
 
             }
+
         }
 
         String produkTerlaris = "";
@@ -83,14 +105,16 @@ public class ReportService {
         for (String nama : frekuensi.keySet()) {
 
             if (frekuensi.get(nama) > jumlahTerjual) {
-                jumlahTerjual = frekuensi.get(nama);
+
                 produkTerlaris = nama;
+                jumlahTerjual = frekuensi.get(nama);
+
             }
 
         }
 
-        System.out.println("Produk Terlaris : " + produkTerlaris +
-                " (" + jumlahTerjual + " terjual)");
+        System.out.println("Produk Terlaris : " + produkTerlaris);
+        System.out.println("Jumlah Terjual  : " + jumlahTerjual);
 
     }
 

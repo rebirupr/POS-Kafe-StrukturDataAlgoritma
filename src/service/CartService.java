@@ -1,12 +1,12 @@
 package service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Stack;
 import model.ItemKeranjang;
 import model.Pelanggan;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import model.Transaksi;
-import service.TransactionService;
+import util.IdGenerator;
 
 public class CartService {
     // Menyimpan seluruh item yang dipilih pelanggan.
@@ -33,8 +33,8 @@ public class CartService {
 
     // Menghitung subtotal seluruh item yang ada di dalam keranjang.
     // Setiap harga item dikaliakn jumlah pembelian, kemudian dijumlahkan untuk mendapatkan subtotal.
-    public double hitungSubtotal() {
-        double subtotal = 0;
+    public int hitungSubtotal() {
+        int subtotal = 0;
         for (ItemKeranjang item : keranjang) {
             subtotal += item.getHargaFinal() * item.getJumlah();
         }
@@ -70,31 +70,16 @@ public class CartService {
         ArrayList<ItemKeranjang> daftarItem = new ArrayList<>(keranjang);
 
         // Membuat ID transaksi.
-        String idTransaksi = "TRX" + (transactionService.getJumlahTransaksi() + 1);
+        String idTransaksi = IdGenerator.generateIdTransaksi();
 
         // Membuat objek Transaksi baru.
-        Transaksi transaksi = new Transaksi(idTransaksi, pelanggan.getNomorAntrean, daftarItem, (int) hitungTotal(),LocalDateTime.now());
+        Transaksi transaksi = new Transaksi(idTransaksi, pelanggan.getNomorAntrean(), pelanggan.getNama(), daftarItem, (int) hitungTotal(),LocalDateTime.now());
 
         // Menyimpan transaksi ke riwayat.
-        transactionService.tambahTransaksi(transaksi);
+        transactionservice.tambahTransaksi(transaksi);
 
-        System.out.println();
-        System.out.println("===============================");
-        System.out.println("        KAFE SEDUH KALA        ");
-        System.out.println("===============================");
-        System.out.println("ID Transaksi: " + idTransaksi);
-        System.out.println("Nomor Antrean: " + pelanggan.getNomorAntrean());
-        System.out.println("Pelanggan: " + pelanggan.getNama());
-        System.out.println("-------------------------------");
-
-        for (ItemKeranjang item : keranjang) {
-            System.out.println(item.getProduk().getNama() + " x" + item.getJumlah() + " = Rp " + (item.getHargaFinal() * item.getJumlah()));
-        }
-
-        System.out.println("-------------------------------");
-        System.out.println("TOTAL: Rp " + (int) hitungTotal());
-        System.out.println("================================");
-        System.out.println("Terima kasih telah berbelanja.");
+        // Cetak Struk
+        ReceiptPrinter.cetakStruk(transaksi);
 
         // Keranjang dikosongkan karena transaksi sudah selesai.
         kosongkanKeranjang();

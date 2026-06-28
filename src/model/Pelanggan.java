@@ -3,7 +3,7 @@ package model;
 // Menyimpan data pelanggan yang sedang berada di dalam antrean.
 public class Pelanggan { 
     // Variabel untuk menyimpan nomor antrean pelanggan.
-    private String nomoAntrean;
+    private String nomorAntrean;
     // Variabel untuk menyimpan nama pelanggan.
     private String nama;
 
