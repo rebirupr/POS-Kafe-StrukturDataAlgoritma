@@ -1,3 +1,8 @@
+package service;
+import java.util.LinkedList;
+import java.util.Queue;
+import model.Pelanggan;
+
 public class QueueService {
     private Queue<Pelanggan> antrean = new LinkedList<>();
     private int nomorBerikutnya = 1;
