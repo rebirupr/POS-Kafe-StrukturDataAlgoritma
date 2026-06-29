@@ -14,7 +14,7 @@ Kelompok    : 10
    - Mengimplementasikan validasi stok serta proses penambahan dan pengurangan stok.
    - Mengelola data produk dan harga kustomisasi yang dibaca dari file CSV.
    - Menambahkan komentar analisis kompleksitas pada method yang relevan.
-   - Menyusun README, serta 
+   - Menyusun README, serta mengedit video
 
 2. Nama Anggota 2 : [Rona Humaira]
    NIM            : [L0125030]
