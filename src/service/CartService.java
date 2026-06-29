@@ -17,6 +17,7 @@ public class CartService {
     // Item akan diletakkan di bagian paling atas Stack sehingga dapat diambil kembali menggunakan fitur Undo.
     // Stok langsung dikurangi di sini (bukan nunggu checkout), supaya barang yang udah masuk keranjang
     // gak bisa "dijual dua kali" ke pelanggan lain selama transaksi ini masih berjalan.
+    // Kompleksitas O(1) karena push() hanya menambahkan satu elemen ke bagian atas Stack.
     public void tambahItem(ItemKeranjang item, ProductService productService) {
         keranjang.push(item);
         productService.kurangiStok(item.getProduk().getId(), item.getJumlah());
@@ -26,6 +27,7 @@ public class CartService {
     // Digunakan untuk fitur Undo apabila pelanggan membatalkan item terakhir yang dipilih.
     // Karena stoknya udah dikurangi pas item ditambahkan, di sini stok itu dikembalikan lagi (restore).
     // Jika keranjang masih kosong, method berhenti.
+    // Kompleksitas O(1) karena pop() hanya mengambil elemen paling atas Stack.
     public void undoItem(ProductService productService) {
         if (keranjang.isEmpty()) {
             System.out.println("Keranjang masih kososng.");
@@ -38,6 +40,7 @@ public class CartService {
 
     // Menghitung subtotal seluruh item yang ada di dalam keranjang.
     // Setiap harga item dikaliakn jumlah pembelian, kemudian dijumlahkan untuk mendapatkan subtotal.
+    // Kompleksitas O(n) karena harus mengunjungi seluruh item yang ada di dalam Stack.
     public int hitungSubtotal() {
         int subtotal = 0;
         for (ItemKeranjang item : keranjang) {
@@ -47,12 +50,14 @@ public class CartService {
     }
 
     // Menghitung total pembayaran.
+    // Kompleksitas O(n) karena memanggil hitungSubtotal().
     public double hitungTotal() {
         return hitungSubtotal();
     }
     
     // Mengembalikan seluruh isi keranjang.
     // Digunakan oleh Main atau Class lain jika ingin menampilkan daftar item yanng dipilih pelanggan.
+    // Kompleksitas O(1).
     public Stack<ItemKeranjang> getKeranjang() {
         return keranjang;
     }
@@ -60,6 +65,7 @@ public class CartService {
     // Melakukan proses checkout.
     // Seluruh stokk produk akan dikurangi secara permanen, kemudian dibuat objek Transaksi dan disimpan ke TransactionService sebagai riwayat transaksi.
     // Setelah checkout selesai, keranjang dikosongkan agar siap digunakan oleh pelanggan berikutnya.
+    // Kompleksitas O(n) karena harus memproses seluruh item yang ada di dalam keranjang.
     public void checkout(Pelanggan pelanggan, ProductService productservice, TransactionService transactionservice) {
         if (keranjang.isEmpty()) {
             System.out.println("Keranjang masih kosong.");
@@ -91,6 +97,7 @@ public class CartService {
 
     // Menghapus seluruh isi keranjang.
     // Dipanggil setelah checkout berhasil agar pelanggan berikutnya memulai keranjang yang kosong.
+    // Kompleksitas O(1) karena clear() mengososngkan Stack.
     public void kosongkanKeranjang() {
         keranjang.clear();
     }
