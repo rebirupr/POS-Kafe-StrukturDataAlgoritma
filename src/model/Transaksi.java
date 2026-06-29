@@ -1,6 +1,6 @@
 package model;
 
-import java.time.LocalDateTime; // Untuk waktu "Pembelian" yang real time
+import java.time.LocalDateTime; // Untuk waktu "Pembelian" yang real time secara otomatis
 import java.util.ArrayList;
 
 // Menyimpan seluruh informasi satu transaksi yang sudah selesai dibayar.
@@ -41,7 +41,7 @@ public class Transaksi {
         this.totalHarga = totalHarga;
         this.waktuTransaksi = waktuTransaksi;
     }
-
+    // Method getter digunakan agar class lain dapat mengambil data transaksi tanpa mengubah isi object secara langsung.
     // Mengembalikan ID transaksi.
     public String getIdTransaksi() {
         return idTransaksi;

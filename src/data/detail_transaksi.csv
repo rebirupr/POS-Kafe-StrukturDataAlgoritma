@@ -1,3 +1,6 @@
 ID Transaksi,ID Produk,Nama Produk,Jumlah,Harga
 TRX001,P002,Seduh Kala Signature,1,27000
 TRX001,P003,Chocolate Blast,1,32000
+TRX001,P001,Black Kala,2,17000
+TRX001,P002,Seduh Kala Signature,1,27000
+TRX002,P004,Matcha Latte,1,35000

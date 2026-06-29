@@ -2,8 +2,8 @@
 LEMBAR PENILAIAN KONTRIBUSI ANGGOTA KELOMPOK
 ===========================================================
 
-Tema Proyek : POS (Point of Sale) System - Campus Coffee POS
-Kelompok    : [Nomor Kelompok]
+Tema Proyek : POS (Point of Sale) System - Seduh Kala 
+Kelompok    : 10
 
 1. Nama Anggota 1 : [Jovienda Nadia Judial Kharisa]
    NIM            : [L0125018]
@@ -14,6 +14,7 @@ Kelompok    : [Nomor Kelompok]
    - Mengimplementasikan validasi stok serta proses penambahan dan pengurangan stok.
    - Mengelola data produk dan harga kustomisasi yang dibaca dari file CSV.
    - Menambahkan komentar analisis kompleksitas pada method yang relevan.
+   - Menyusun README, serta 
 
 2. Nama Anggota 2 : [Rona Humaira]
    NIM            : [L0125030]
@@ -31,6 +32,6 @@ Kelompok    : [Nomor Kelompok]
    - Mengimplementasikan penyimpanan dan pembacaan data transaksi menggunakan java.io (CSV).
    - Mengimplementasikan laporan penjualan, produk terlaris, dan total pendapatan.
    - Mengintegrasikan seluruh modul pada Main.java.
-   - Menyusun README, serta Menyusun di GitHub
+   - Menyusun keseluruhan di GitHub
 
 ===========================================================
