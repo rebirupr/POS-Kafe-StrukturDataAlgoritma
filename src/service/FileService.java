@@ -5,7 +5,6 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import model.ItemKeranjang;
 import model.Transaksi;
 
@@ -89,7 +88,7 @@ public class FileService {
 
                 writer.write(
                         transaksi.getIdTransaksi() + "," +
-                        item.getNamaProduk() + "," +
+                        item.getProduk() + "," +
                         item.getJumlah() + "," +
                         item.getHargaFinal());
 
