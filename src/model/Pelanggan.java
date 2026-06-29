@@ -1,6 +1,7 @@
 package model;
 
 // Menyimpan data pelanggan yang sedang berada di dalam antrean.
+// Class ini akan digunakan oleh QueueService untuk mengatur urutan pelayanan pelanggan.
 public class Pelanggan { 
     // Variabel untuk menyimpan nomor antrean pelanggan.
     private String nomorAntrean;
