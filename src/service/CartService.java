@@ -15,20 +15,25 @@ public class CartService {
 
     // Menambahkan satu item ke dalam keranjang.
     // Item akan diletakkan di bagian paling atas Stack sehingga dapat diambil kembali menggunakan fitur Undo.
-    public void tambahItem(ItemKeranjang item) {
+    // Stok langsung dikurangi di sini (bukan nunggu checkout), supaya barang yang udah masuk keranjang
+    // gak bisa "dijual dua kali" ke pelanggan lain selama transaksi ini masih berjalan.
+    public void tambahItem(ItemKeranjang item, ProductService productService) {
         keranjang.push(item);
+        productService.kurangiStok(item.getProduk().getId(), item.getJumlah());
     }
 
     // Menghapus item terakhir yang dimasukkan ke keranjang.
     // Digunakan untuk fitur Undo apabila pelanggan membatalkan item terakhir yang dipilih.
+    // Karena stoknya udah dikurangi pas item ditambahkan, di sini stok itu dikembalikan lagi (restore).
     // Jika keranjang masih kosong, method berhenti.
-    public void undoItem() {
+    public void undoItem(ProductService productService) {
         if (keranjang.isEmpty()) {
             System.out.println("Keranjang masih kososng.");
             return;
         }
-        keranjang.pop();
-        System.out.println("Item berhasil dihapus dari keranjang.");
+        ItemKeranjang dihapus = keranjang.pop();
+        productService.tambahStok(dihapus.getProduk().getId(), dihapus.getJumlah());
+        System.out.println("Item \"" + dihapus.getProduk().getNama() + "\" berhasil dihapus dari keranjang, stok dikembalikan.");
     }
 
     // Menghitung subtotal seluruh item yang ada di dalam keranjang.
@@ -61,10 +66,9 @@ public class CartService {
             return;
         }
 
-        // Mengurangi stok setiap produk yang dibeli.
-        for (ItemKeranjang item : keranjang) {
-            productservice.kurangiStok(item.getProduk().getId(), item.getJumlah());
-        }
+        // Catatan: stok TIDAK dikurangi lagi di sini karena sudah dikurangi
+        // sejak item dimasukkan ke keranjang lewat tambahItem(). Kalau dikurangi lagi di sini,
+        // stoknya bakal kepotong dua kali untuk transaksi yang sama.
 
         // Mengubah isi Stack menjadi ArrayList karena class Transaksi menggunakan ArrayList.
         ArrayList<ItemKeranjang> daftarItem = new ArrayList<>(keranjang);

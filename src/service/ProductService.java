@@ -20,7 +20,7 @@ public class ProductService {
     format csv yaitu id,nama,hargaDasar,stok, baris pertama header jadi dilewatin */ 
     public void loadProduk() {
         katalog.clear();
-        try (BufferedReader reader = new BufferedReader(new FileReader("data/produk.csv"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/data/produk.csv"))) {
             // lewati baris header
             reader.readLine(); 
             String baris;
