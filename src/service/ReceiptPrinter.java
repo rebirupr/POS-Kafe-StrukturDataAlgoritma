@@ -1,7 +1,6 @@
 package service;
 
 import java.time.format.DateTimeFormatter;
-
 import model.ItemKeranjang;
 import model.Transaksi;
 
@@ -13,6 +12,23 @@ public class ReceiptPrinter {
 
         DateTimeFormatter formatter =
                 DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
+
+        // Lebar kolom "Nama Produk" dibuat dinamis, ikut nama produk paling panjang
+        // di struk ini, supaya nama yang panjang (misal "Butterscotch Sea Salt")
+        // gak nempel sama kolom "Harga Item" di sebelahnya.
+        int lebarNama = "Nama Produk".length();
+        for (ItemKeranjang item : transaksi.getDaftarItem()) {
+            int panjangNama = item.getProduk().getNama().length();
+            if (panjangNama > lebarNama) {
+                lebarNama = panjangNama;
+            }
+        }
+        lebarNama += 4; // kasih jarak lebih lega sebelum kolom berikutnya
+
+        // Lebar garis pemisah tabel item ikut menyesuaikan lebarNama juga,
+        // supaya garisnya tetap pas menutupi seluruh tabel.
+        int lebarGarisTabel = lebarNama + 1 + 12 + 1 + 5 + 1 + 12;
+        String garisTabel = "-".repeat(lebarGarisTabel);
 
         System.out.println();
         System.out.println("==============================================================");
@@ -26,13 +42,13 @@ public class ReceiptPrinter {
         System.out.println("Atas Nama    : " + transaksi.getNamaPelanggan());
         System.out.println("Tanggal      : " + transaksi.getWaktuTransaksi().format(formatter));
 
-        System.out.println("--------------------------------------------------------------");
-        System.out.printf("%-18s %-12s %-5s %-12s%n",
+        System.out.println(garisTabel);
+        System.out.printf("%-" + lebarNama + "s %-12s %-5s %-12s%n",
                 "Nama Produk",
                 "Harga Item",
                 "Qty",
                 "Harga Total");
-        System.out.println("--------------------------------------------------------------");
+        System.out.println(garisTabel);
 
         int jumlahItem = 0;
 
